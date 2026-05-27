@@ -1,5 +1,9 @@
-# Smart-3-Phase-Energy-Meter
-An esphome/Zigbee based energy meter powered by PZEM-004T V4 and Seed Studio Xiao Esp32 c6
+# Smart-3-Phase-Enrgy-Meter
+An esphome/Zigbee-based energy meter powered by PZEM-004T V4 and Seed Studio Xiao ESP32-C6
+ <div align="center">
+  <img src="Images/Final.jpg" width="500" height="400"/>
+</div>
+
 
 ## Componenets
 1. [Seed Studio Xiao C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html)
@@ -10,16 +14,32 @@ An esphome/Zigbee based energy meter powered by PZEM-004T V4 and Seed Studio Xia
 6. [4 Pin JST XH Male Connector - 2.54mm pitch](https://quartzcomponents.com/products/4-pin-jst-xh-male-connector-5-24mm-pitch)
 7. [4 Pin JST Female to Female Connector - 2.54mm Pitch](https://quartzcomponents.com/products/4-pin-jst-female-to-female-connector-2-54mm-pitch)
 8. [2 Pin Screw Terminal Block - 5mm Pitch](https://quartzcomponents.com/products/2-pin-pcb-mount-terminal-block-screw-type)
-9. [Housing](.)
+9. [Transparent Junction Box(180X130X100)](https://amzn.in/d/0d2WMVyG)
 
 ## Schematics 
+ <div align="center">
+  <img src="Images/schematics.png" width="500" height="400"/>
+</div>
 
-sch png 
+### Note: 
+#### If ESPHome is unable to read from all three PZEM modules simultaneously, it is because multiple devices prevent the signal from dropping close enough to GND. To fix this, it is recommended to place a 1N5819 Schottky diode on the TX line of each PZEM . Which I have included in the schematics as well as  in the PCB 
 
 ## PCB 
 
-3d png  irl png 
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="Images/PCB.png" width="150" height="200"><br>
+    </td>
+    <td align="center">
+      <img src="Images/pcb.jpg" width="150" height="200"><br>
+    </td>
+
+  </tr>
+</table>
+
 
 ## About stuff 
 
 it has two types oof operating system zigbee and Esphome 
+
