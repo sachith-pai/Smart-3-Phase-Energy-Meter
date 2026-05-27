@@ -1,4 +1,4 @@
-# Smart-3-Phase-Enrgy-Meter
+# Smart-3-Phase-Energy-Meter
 An esphome/Zigbee based energy meter powered by PZEM-004T V4 and Seed Studio Xiao Esp32 c6
 
 ## Componenets
