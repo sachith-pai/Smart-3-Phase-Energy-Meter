@@ -1,5 +1,5 @@
 # Smart-3-Phase-Enrgy-Meter
-An esphome/Zigbee-based energy meter powered by PZEM-004T V4 and Seed Studio Xiao ESP32-C6
+An ESPHome-based energy meter powered by PZEM-004T V4 and Seed Studio Xiao ESP32-C6
  <div align="center">
   <img src="Images/Final.jpg" width="500" height="400"/>
 </div>
@@ -21,25 +21,27 @@ An esphome/Zigbee-based energy meter powered by PZEM-004T V4 and Seed Studio Xia
   <img src="Images/schematics.png" width="500" height="400"/>
 </div>
 
-### Note: 
-#### If ESPHome is unable to read from all three PZEM modules simultaneously, it is because multiple devices prevent the signal from dropping close enough to GND. To fix this, it is recommended to place a 1N5819 Schottky diode on the TX line of each PZEM . Which I have included in the schematics as well as  in the PCB 
+> [!NOTE]
+>If ESPHome is unable to read from all three PZEM modules simultaneously, it is because multiple devices prevent the signal from dropping close enough to GND. To fix this, it is recommended to place a 1N5819  Schottky diode on the TX line of each PZEM .  Which I have included in the schematics as well as  in the PCB 
 
 ## PCB 
 
 <table align="center">
   <tr>
     <td align="center">
-      <img src="Images/PCB.png" width="150" height="200"><br>
+      <img src="Images/PCB.png" width="150" height="250"><br>
     </td>
     <td align="center">
-      <img src="Images/pcb.jpg" width="150" height="200"><br>
+      <img src="Images/pcb.jpg" width="150" height="300"><br>
     </td>
 
   </tr>
 </table>
 
+## Refrence
+1.[ESPHome Pzem-004T Docs](https://esphome.io/components/sensor/pzemac/)
+2.[ESPHome SSD1306 OLED Display Docs](https://esphome.io/components/display/ssd1306/)
+3.[Multiple Pzem Communication Error forum](https://community.home-assistant.io/t/pzem-004t-v4-0-esphome-not-able-to-read-simultaneously-from-all-3-pzems/957478/2)
 
-## About stuff 
 
-it has two types oof operating system zigbee and Esphome 
 
