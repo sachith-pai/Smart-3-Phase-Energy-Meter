@@ -39,9 +39,9 @@ An ESPHome-based energy meter powered by PZEM-004T V4 and Seed Studio Xiao ESP32
 </table>
 
 ## Refrence
-1.[ESPHome Pzem-004T Docs](https://esphome.io/components/sensor/pzemac/)
-2.[ESPHome SSD1306 OLED Display Docs](https://esphome.io/components/display/ssd1306/)
-3.[Multiple Pzem Communication Error forum](https://community.home-assistant.io/t/pzem-004t-v4-0-esphome-not-able-to-read-simultaneously-from-all-3-pzems/957478/2)
+1. [ESPHome Pzem-004T Docs](https://esphome.io/components/sensor/pzemac/)
+2. [ESPHome SSD1306 OLED Display Docs](https://esphome.io/components/display/ssd1306/)
+3. [Multiple Pzem Communication Error forum](https://community.home-assistant.io/t/pzem-004t-v4-0-esphome-not-able-to-read-simultaneously-from-all-3-pzems/957478/2)
 
 
 
