@@ -1,12 +1,12 @@
 # Smart-3-Phase-Enrgy-Meter
-An ESPHome-based energy meter powered by PZEM-004T V4 and Seed Studio Xiao ESP32-C6
+An ESPHome-based energy meter powered by PZEM-004T V4 and Seed Studio Xiao ESP32-C6/ESP32-C3
  <div align="center">
   <img src="Images/Final.jpg" width="500" height="400"/>
 </div>
 
 
 ## Componenets
-1. [Seed Studio Xiao C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html)
+1. [Seed Studio Xiao C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) OR Xiao C3
 2. [PZEM-004T V4](https://robu.in/product/pzem-004t-with-coil-ct-with-outcasehot-ac-meter/)
 3. [SSD1306 0.96 OLED Display](https://quartzcomponents.com/products/oled-display-0-96-inch-i2c-interface-4-pin-blue-ssd1306)
 4. [Hi-Link 5V 5W PSU (HLK 5M05)](https://robu.in/product/hlk-5m05-5v-5w-switch-power-supply-module/?gad_source=1&gad_campaignid=17427802559&gbraid=0AAAAADvLFWdyY2DiddMgGUwxKQrgYGrId&gclid=CjwKCAjwq6DQBhBVEiwA4ZD5XINyfahhBX2IyH8qCKN4hPUuXApgPumztB-3vMhQIovpEZZ0PR9EfBoCjpYQAvD_BwE)
