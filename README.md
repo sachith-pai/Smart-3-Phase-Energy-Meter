@@ -38,6 +38,23 @@ An ESPHome-based energy meter powered by PZEM-004T V4 and Seed Studio Xiao ESP32
   </tr>
 </table>
 
+## Installtion 
+1. Download the configuration of your board (c3 or c6), which can be found [HERE](/ESPHOME), and simply go to your ESPHome instance and "import from file" as shown in the picture 
+  <div align="center">
+  <img src="Images/Esphome.png" width="250" height="250"/>
+</div>
+2. Set the address to each of the Pzem-004T's using a USB to TTL Serial Adapter as follows
+
+> [!NOTE]
+> The address can also be changed in ESPHome, but this is recommended 
+
+|Phase|Address|
+|:--:|:--:|
+|P1|0x01|
+|P2|0x02|
+|P3|0x03|
+
+
 ## Refrence
 1. [ESPHome Pzem-004T Docs](https://esphome.io/components/sensor/pzemac/)
 2. [ESPHome SSD1306 OLED Display Docs](https://esphome.io/components/display/ssd1306/)
