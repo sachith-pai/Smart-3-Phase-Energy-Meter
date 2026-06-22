@@ -1,0 +1,301 @@
+esphome:
+  name: energy-meter
+  friendly_name: Energy Meter
+  on_boot:
+      priority: 600
+      then:
+          - output.turn_off: rf_switch_enable
+          - output.turn_off: rf_antenna_select
+          - script.execute: display_cycle
+
+
+improv_serial:
+
+
+dashboard_import:
+  package_import_url: github://Pai-Labs/EnergyMeter-Firmware/main.yaml@main
+
+output:
+    - platform: gpio
+      id: rf_switch_enable
+      pin: RF_SWITCH_EN
+
+    - platform: gpio
+      id: rf_antenna_select
+      pin: RF_ANT_SELECT
+
+esp32:
+  board: seeed_xiao_esp32c6
+  framework:
+    type: esp-idf
+
+logger:
+
+
+api:
+
+
+ota:
+  - platform: esphome
+
+
+wifi:
+  ap:
+    ssid: "Energy-Meter Fallback Hotspot"
+    password: "NkoqXuAA52fY"
+
+captive_portal:
+
+uart:
+  tx_pin: D9
+  rx_pin: D8
+  baud_rate: 9600
+
+modbus:
+
+sensor:
+  - platform: pzemac
+    address: 0x01
+    current:
+      name: "P1 Current"
+      id: p1_curr
+    voltage:
+      name: "P1 Voltage"
+      id: p1_volt
+      filters: 
+        - timeout:
+            timeout: 5s
+            value: !lambda return 0;       
+    energy:
+      name: "P1 Energy"
+      filters:
+        - timeout:
+            timeout: 5s
+            value: !lambda return 0;             
+    power:
+      name: "P1 Power"
+      id: p1_watts
+    frequency:
+      name: "P1 Frequency"
+      id: p1_freq
+    power_factor:
+      name: "P1 Power Factor"
+    update_interval: 2s
+
+  - platform: pzemac
+    address: 0x02
+    current:
+      name: "P2 Current"
+      id: p2_curr
+    voltage:
+      name: "P2 Voltage"
+      id: p2_volt
+      filters: 
+        - timeout:
+            timeout: 5s
+            value: !lambda return 0;       
+    energy:
+      name: "P2 Energy"
+      filters:
+        - timeout:
+            timeout: 5s
+            value: !lambda return 0;             
+    power:
+      name: "P2 Power"
+      id: p2_watts
+    frequency:
+      name: "P2 Frequency"
+      id: p2_freq
+    power_factor:
+      name: "P2 Power Factor"
+    update_interval: 2s    
+
+  - platform: pzemac
+    address: 0x03
+    current:
+      name: "P3 Current"
+      id: p3_curr
+    voltage:
+      name: "P3 Voltage"
+      id: p3_volt
+      filters: 
+        - timeout:
+            timeout: 5s
+            value: !lambda return 0;       
+    energy:
+      name: "P3 Energy"
+      filters:
+        - timeout:
+            timeout: 5s
+            value: !lambda return 0;             
+    power:
+      name: "P3 Power"
+      id: p3_watts
+    frequency:
+      name: "P3 Frequency"
+      id: p3_freq
+    power_factor:
+      name: "P3 Power Factor"
+    update_interval: 2s    
+
+  - platform: template    
+    name: "Total Power kW"
+    id: total_power_kw
+    unit_of_measurement: "kW"
+    device_class: power
+    state_class: measurement
+    accuracy_decimals: 2
+    update_interval: 1s
+    lambda: |-
+      float p1 = id(p1_watts).state;
+      float p2 = id(p2_watts).state;
+      float p3 = id(p3_watts).state;
+      
+      float total_w = (isnan(p1) ? 0 : p1) + (isnan(p2) ? 0 : p2) + (isnan(p3) ? 0 : p3);
+      
+      return total_w / 1000.0; 
+
+  - platform: wifi_signal
+    id: wifi1
+    update_interval: 60s
+    entity_category: "diagnostic"
+    internal: true  
+     
+i2c:
+  sda: D1
+  scl: D2
+  scan: true
+
+color:
+  - id: white
+    red: 100%
+    green: 100%
+    blue: 100%
+
+font:
+  - file: "gfonts://Roboto"
+    id: roboto_12
+    size: 12
+  - file: "gfonts://Roboto"
+    id: default_font
+    size: 10
+  - file: "gfonts://Material+Symbols+Outlined" 
+    id: material_symbols_18
+    size: 18
+
+image:
+  - file: mdi:wifi
+    id: wifi_icon
+    type: BINARY
+    resize: 12x12
+  - file: mdi:lightning-bolt-outline
+    id: lightning
+    type: BINARY
+    resize: 17X17
+
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x64"
+    address: 0x3C
+    id: dis
+    update_interval: 1s
+    pages:
+      - id: p0 
+        lambda: |- 
+          it.printf(62, 10, id(roboto_12), white, TextAlign::TOP_CENTER, "Smart Energy Meter");
+          it.printf(59, 28, id(roboto_12), white, TextAlign::TOP_CENTER, "by Sachith :)");
+          it.image(56, 45, id(lightning)); 
+
+      - id: p1   
+        lambda: |-  
+          it.printf(34, 20, id(roboto_12), white, "%.3f kW", id(total_power_kw).state);
+          it.printf(100, 48, id(default_font), white, "%.0f", id(p3_watts).state);
+          it.printf(58, 48, id(default_font), white, "%.0f", id(p2_watts).state);
+          it.printf(10, 48, id(default_font), white, "%.0f", id(p1_watts).state);    
+          it.printf(100, 38, id(default_font), white, "P3");
+          it.filled_rectangle(84, 39, 1, 30, white);
+          it.printf(56, 38, id(default_font), white, "P2");
+          it.printf(11, 38, id(default_font), white, "P1");
+          it.filled_rectangle(42, 40, 1, 30, white);
+          it.filled_rectangle(0, 39, 128, 1, white);
+          it.printf(25, 25, id(default_font), white, "");
+          it.filled_rectangle(0, 13, 128, 1, white);
+          it.printf(94, 0, id(roboto_12), Color::WHITE, "%.0f dBm", id(wifi1).state);
+          it.image(7, 0, id(wifi_icon)); 
+          it.printf(25, 0, id(roboto_12), Color::WHITE, "WiFi");
+
+      - id: p2  
+        lambda: |-
+          it.printf(34, 20, id(roboto_12), white, "%.3f W", id(p1_watts).state);
+          it.printf(100, 48, id(default_font), white, "%.0f", id(p1_freq).state); 
+          it.printf(58, 48, id(default_font), white, "%.0f", id(p1_volt).state);  
+          it.printf(10, 48, id(default_font), white, "%.0f", id(p1_curr).state);    
+          it.printf(100, 38, id(default_font), white, "Freq"); 
+          it.filled_rectangle(84, 39, 1, 30, white);
+          it.printf(49, 38, id(default_font), white, "Voltage"); 
+          it.printf(5, 38, id(default_font), white, "Current"); 
+          it.printf(43, 0, id(roboto_12), white, "Phase 1 ");
+          it.filled_rectangle(42, 40, 1, 60, white);
+          it.filled_rectangle(0, 39, 128, 1, white);
+          it.printf(25, 25, id(default_font), white, "");
+          it.filled_rectangle(0, 13, 128, 1, white);
+          it.printf(94, 0, id(roboto_12), Color::WHITE, "%.0f dBm", id(wifi1).state);
+          it.image(7, 0, id(wifi_icon)); 
+
+      - id: p3  
+        lambda: |-
+          it.printf(34, 20, id(roboto_12), white, "%.3f W", id(p2_watts).state);
+          it.printf(100, 48, id(default_font), white, "%.0f", id(p2_freq).state); 
+          it.printf(58, 48, id(default_font), white, "%.0f", id(p2_volt).state);  
+          it.printf(10, 48, id(default_font), white, "%.0f", id(p2_curr).state);    
+          it.printf(100, 38, id(default_font), white, "Freq"); 
+          it.filled_rectangle(84, 39, 1, 30, white);
+          it.printf(49, 38, id(default_font), white, "Voltage"); 
+          it.printf(5, 38, id(default_font), white, "Current"); 
+          it.printf(43, 0, id(roboto_12), white, "Phase 2 ");
+          it.filled_rectangle(42, 40, 1, 60, white);
+          it.filled_rectangle(0, 39, 128, 1, white);
+          it.printf(25, 25, id(default_font), white, "");
+          it.filled_rectangle(0, 13, 128, 1, white);
+          it.printf(94, 0, id(roboto_12), Color::WHITE, "%.0f dBm", id(wifi1).state);
+          it.image(7, 0, id(wifi_icon)); 
+
+      - id: p4  
+        lambda: |-
+          it.printf(34, 20, id(roboto_12), white, "%.3f W", id(p3_watts).state);
+          it.printf(100, 48, id(default_font), white, "%.0f", id(p3_freq).state); 
+          it.printf(58, 48, id(default_font), white, "%.0f", id(p3_volt).state);  
+          it.printf(10, 48, id(default_font), white, "%.0f", id(p3_curr).state);   
+          it.printf(100, 38, id(default_font), white, "Freq"); 
+          it.filled_rectangle(84, 39, 1, 30, white);
+          it.printf(49, 38, id(default_font), white, "Voltage"); 
+          it.printf(5, 38, id(default_font), white, "Current"); 
+          it.printf(43, 0, id(roboto_12), white, "Phase 3 ");
+          it.filled_rectangle(42, 40, 1, 60, white);
+          it.filled_rectangle(0, 39, 128, 1, white);
+          it.printf(25, 25, id(default_font), white, "");
+          it.filled_rectangle(0, 13, 128, 1, white);
+          it.printf(94, 0, id(roboto_12), Color::WHITE, "%.0f dBm", id(wifi1).state);
+          it.image(7, 0, id(wifi_icon)); 
+
+script:
+  - id: display_cycle
+    mode: restart
+    then:
+      - delay: 1s          
+      - display.page.show: p0
+      - component.update: dis
+      - delay: 2s
+      - while:
+          condition:
+            lambda: 'return true;'
+          then:
+            - display.page.show: p1  
+            - component.update: dis
+            - delay: 30s
+            - display.page.show: p2  
+            - component.update: dis
+            - delay: 5s
+            - display.page.show: p3 
+            - component.update: dis
+            - delay: 5s
