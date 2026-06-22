@@ -1,6 +1,9 @@
 esphome:
   name: energy-meter
   friendly_name: Energy Meter
+  project: 
+    name: 3Phase.EnergyMeter
+    version: 1.0.0
   on_boot:
       priority: 600
       then:
